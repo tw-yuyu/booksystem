@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.booksystem.mapper.ReaderProposalMapper">
+
+    <insert id="save">
+        INSERT INTO reader_proposal (user_id,content,is_publish,reply_content,reply_time,create_time)
+        VALUES (#{userId},#{content},#{isPublish},#{rePlyContent},#{rePlyTime},#{createTime})
+    </insert>
+
+    <update id="update">
+        UPDATE reader_proposal
+        <set>
+            <if test="rePlyContent != null and rePlyContent != ''">
+                reply_content = #{rePlyContent},
+            </if>
+            <if test="rePlyTime != null">
+                reply_time = #{rePlyTime},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="batchDelete" parameterType="list">
+        DELETE FROM reader_proposal WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="query" resultMap="BaseResultMap">
+        SELECT rp.*,u.user_name
+        FROM reader_proposal rp
+        LEFT JOIN user u on u.id = rp.user_id
+        <where>
+            <if test="content != null and content != ''">
+                AND rp.content LIKE concat('%',#{content},'%')
+            </if>
+            <if test="userId != null">
+                AND rp.userId = #{userId}
+            </if>
+            <if test="isPublish != null">
+                AND rp.is_publish = #{isPublish}
+            </if>
+            <if test="startTime != null">
+                AND rp.create_time BETWEEN #{startTime} AND #{endTime}
+            </if>
+        </where>
+            ORDER BY rp.create_time DESC
+            <if test="current != null and size != null">
+            LIMIT #{current},#{size}
+            </if>
+    </select>
+
+
+    <select id="queryCount" resultType="integer">
+
+        SELECT COUNT(*)
+        FROM reader_proposal rp
+        <where>
+            <if test="content != null and content != ''">
+                AND rp.content LIKE concat('%',#{content},'%')
+            </if>
+            <if test="userId != null">
+                AND rp.userId = #{userId}
+            </if>
+            <if test="isPublish != null">
+                AND rp.is_publish = #{isPublish}
+            </if>
+            <if test="startTime != null">
+                AND rp.create_time BETWEEN #{startTime} AND #{endTime}
+            </if>
+        </where>
+
+    </select>
+
+    <resultMap id="BaseResultMap" type="com.booksystem.pojo.vo.ReaderProposalVO">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="content" property="content"/>
+        <result column="is_publish" property="isPublish"/>
+        <result column="reply_content" property="rePlyContent"/>
+        <result column="reply_time" property="rePlyTime"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+<!--    <id column="id" property="id"/>	指定 主鍵 欄位，MyBatis 會優先處理	-->
+<!--    <result column="name" property="name"/>	指定普通欄位的對應關係-->
+<!--    property="name" → 對應 Java 類的成員變數 (JavaBean 屬性)-->
+<!--    column="name" → 對應資料庫的欄位名稱-->
+
+
+</mapper>

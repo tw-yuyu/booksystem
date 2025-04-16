@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.booksystem.mapper.BookshelfMapper">
+
+    <insert id="save">
+        INSERT INTO bookshelf (name,floor,area,frame)
+        VALUES (#{name},#{floor},#{area},#{frame})
+    </insert>
+
+    <update id="update">
+        UPDATE bookshelf
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="floor != null and floor != ''">
+                floor = #{floor},
+            </if>
+            <if test="area != null and area != ''">
+                area = #{area},
+            </if>
+            <if test="frame != null and frame != ''">
+                frame = #{frame},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="batchDelete" parameterType="list">
+        DELETE FROM bookshelf WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="query" resultMap="BaseResultMap">
+        SELECT b.*
+        FROM bookshelf b
+        <where>
+            <if test="floor != null and floor != ''">
+                 b.floor LIKE concat('%',#{floor},'%')
+            </if>
+        </where>
+            <if test="current != null and size != null">
+            LIMIT #{current},#{size}
+            </if>
+    </select>
+
+
+    <select id="queryCount" resultType="integer">
+
+        SELECT COUNT(*)
+        FROM bookshelf b
+        <where>
+            <if test="floor != null and floor != ''">
+                AND b.floor LIKE concat('%',#{floor},'%')
+            </if>
+        </where>
+
+    </select>
+
+    <resultMap id="BaseResultMap" type="com.booksystem.pojo.entity.Bookshelf">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="floor" property="floor"/>
+        <result column="area" property="area"/>
+        <result column="frame" property="frame"/>
+    </resultMap>
+<!--    <id column="id" property="id"/>	指定 主鍵 欄位，MyBatis 會優先處理	-->
+<!--    <result column="name" property="name"/>	指定普通欄位的對應關係-->
+<!--    property="name" → 對應 Java 類的成員變數 (JavaBean 屬性)-->
+<!--    column="name" → 對應資料庫的欄位名稱-->
+
+
+</mapper>

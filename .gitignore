@@ -1,0 +1,19 @@
+# === Spring Boot 後端 ===
+/initialcode/backend/books-manage-sys/target/
+/initialcode/backend/books-manage-sys/.idea/
+/initialcode/backend/books-manage-sys/*.iml
+/initialcode/backend/books-manage-sys/src/main/resources/application-local.yml
+
+# === Vue2 前端 ===
+/initialcode/frontend/book-manage-sys-view/node_modules/
+/initialcode/frontend/book-manage-sys-view/dist/
+/initialcode/frontend/book-manage-sys-view/.env*
+!/initialcode/frontend/book-manage-sys-view/.env.example
+
+# === 通用工具類設定檔 ===
+*.log
+*.tmp
+*.DS_Store
+.svn/
+.vscode/
+.idea/
