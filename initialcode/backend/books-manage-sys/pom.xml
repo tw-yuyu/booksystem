@@ -110,6 +110,8 @@
     </dependencies>
 
     <build>
+        <!--打包JAR的名稱-->
+        <finalName>app</finalName>
         <defaultGoal>compile</defaultGoal>
         <!--定義資源路徑-->
         <resources>

@@ -11,4 +11,4 @@ COPY . .
 RUN ./mvnw clean package -DskipTests
 
 # 執行打包後的 JAR 檔案
-ENTRYPOINT ["java", "-jar", "target/books-manage-sys-1.0-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "target/app.jar"]  
