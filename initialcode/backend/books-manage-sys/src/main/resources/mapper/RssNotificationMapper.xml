@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.booksystem.mapper.RssNotificationMapper">
+
+<!--    需要改成LIST-->
+<!--    new RssNotification(1, "書來了", false, "2025-03-23 12:00:00"),-->
+<!--    separator="," 用逗號連接起來-->
+<!--    <foreach> 會把 list 裡面的每一筆 rssNotification 物件轉換成 SQL 裡的 (?,?,?,?) 格式，然後用 , 把它們連接起來-->
+<!--    (1, 'A', false, '2025-03-23 12:00:00'),
+        (2, 'B', false, '2025-03-23 12:01:00'),-->
+    <insert id="save">
+        INSERT INTO rss_notification (user_id,content,is_read,create_time)
+        VALUES
+            <foreach collection="list" item="rssNotification" separator=",">
+                (#{rssNotification.userId},
+                 #{rssNotification.content},
+                 #{rssNotification.isRead},
+                 #{rssNotification.createTime})
+            </foreach>
+    </insert>
+
+    <update id="update">
+        UPDATE rss_notification
+        <set>
+            <if test="content != null and content != ''">
+                isbn = #{content},
+            </if>
+            <if test="isRead != null">
+                isbn = #{isRead},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+<!--    所有消息設為已讀-->
+    <update id="readDeal">
+        UPDATE rss_notification set is_read = 1 WHERE user_id = #{userId}
+    </update>
+
+    <delete id="batchDelete" parameterType="list">
+        DELETE FROM rss_notification WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--    從前端帶值並放進BookQueryDto來這查詢#{name} #{publisher} #{isPlanBuy}-->
+    <select id="query" resultMap="BaseResultMap">
+        SELECT rn.* , u.user_name
+        FROM rss_notification rn
+        LEFT JOIN user u on u.id = rn.user_id
+        <where>
+            <if test="userId != null">
+                AND rn.user_id = #{userId}
+            </if>
+            <if test="isRead != null">
+                AND rn.is_read = #{isRead}
+            </if>
+            <if test="startTime != null">
+                AND rn.create_time BETWEEN #{startTime} AND #{endTime}
+            </if>
+        </where>
+            ORDER BY rn.create_time DESC
+            <if test="current != null and size != null">
+            LIMIT #{current},#{size}
+            </if>
+    </select>
+
+
+    <select id="queryCount" resultType="integer">
+
+        SELECT COUNT(*)
+        FROM rss_notification rn
+        <where>
+            <if test="userId != null">
+                AND rn.user_id = #{userId}
+            </if>
+            <if test="isRead != null">
+                AND rn.is_read = #{isRead}
+            </if>
+            <if test="startTime != null">
+                AND rn.create_time BETWEEN #{startTime} AND #{endTime}
+            </if>
+        </where>
+
+    </select>
+
+    <resultMap id="BaseResultMap" type="com.booksystem.pojo.vo.RssNotificationVO">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="content" property="content"/>
+        <result column="is_read" property="isRead"/>
+        <result column="create_time" property="createTime"/>
+<!--        SELECT b.* , c.name AS category_name,bs.name AS bookshelf_name,bs.floor,bs.area,bs.frame-->
+<!--        外鍵別張表 column="category_name"命名後的名子  property與VO表同名-->
+        <result column="user_name" property="userName"/>
+    </resultMap>
+<!--    <id column="id" property="id"/>	指定 主鍵 欄位，MyBatis 會優先處理	-->
+<!--    <result column="name" property="name"/>	指定普通欄位的對應關係-->
+<!--    property="name" → 對應 Java 類的成員變數 (JavaBean 屬性)-->
+<!--    column="name" → 對應資料庫的欄位名稱-->
+
+
+</mapper>
