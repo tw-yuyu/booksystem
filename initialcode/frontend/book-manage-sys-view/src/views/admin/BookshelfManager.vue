@@ -31,7 +31,6 @@
                 <el-table-column prop="area" width="148" label="書架所在區域"></el-table-column>
                 <el-table-column prop="floor" width="148" label="書架所在樓層"></el-table-column>
                 <el-table-column prop="name" width="148" label="書架名"></el-table-column>
-                <el-table-column prop="frame" width="148" label="書架框架"></el-table-column>
                 <el-table-column label="操作" >
                     <template slot-scope="scope">
                         <!--  每一行數據的所有屬性（例如書名、作者、ISBN 等）都會保存在 row 這個對象中 將 scope.row 傳入 handleEdit 賦值 -->

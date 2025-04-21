@@ -1,6 +1,8 @@
 # 服務配置
+#  如果有環境變數 PORT（Render 會傳入） → 使用這個值（正確的埠口 ✅）
+#  如果在本地執行（沒有設定 PORT） → 就用 21090 方便開發
 server:
-  port: 21090
+  port: ${PORT:21090}
   servlet:
     context-path: /api/book-manage-sys-api/v1.0
 
@@ -18,10 +20,11 @@ spring:
       max-request-size: 10MB
 
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?useSSL=true&serverTimezone=Asia/Taipei
+      username: ${DB_USER}
+      password: ${DB_PASSWORD}
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
