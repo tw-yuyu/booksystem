@@ -2,6 +2,11 @@
   "name": "prosonal-health-web",
   "version": "1.0.0",
   "private": true,
+
+  "engines": {
+    "node": "14.16.0",
+    "npm": "8.19.4"
+  },
   "scripts": {
     "dev": "vue-cli-service serve",
     "serve": "vue-cli-service serve",
