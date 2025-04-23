@@ -21,16 +21,16 @@
 </template>
 
 <script>
-const ADMIN_ROLE = 1;
-const USER_ROLE = 2;
-const DELAY_TIME = 1300;
-import request from "@/utils/request.js";
-import { setToken } from "@/utils/storage.js";
-import md5 from 'js-md5';
+const ADMIN_ROLE = 1;  // 管理員角色代碼
+const USER_ROLE = 2;   // 一般使用者角色代碼
+const DELAY_TIME = 1300; // 延遲時間（顯示 Swal 過場用）
+import request from "@/utils/request.js"; //引入封裝好、客製過的 axios 實例
+import { setToken } from "@/utils/storage.js"; //從 @/utils/storage.js 檔案裡引入 setToken 這個函式，這樣你這支 Vue 檔案裡就可以直接使用它！
+import md5 from 'js-md5'; //md5() 來對資料進行 MD5 加密（雜湊）
 import Logo from '@/components/Logo.vue';
 export default {
     name: "Login",
-    components: { Logo },
+    components: { Logo },//註冊元件才能在 template 使用
     data() {
         return {
             act: '',
@@ -38,27 +38,53 @@ export default {
             colorLogo: 'rgb(38,38,38)',
         }
     },
-    created(){
+    created() {//當這個元件初始化時，就自動幫我執行 defaultLoad() 方法，先載入一些預設資料或設定 類似建構子
         this.defaultLoad();
     },
     methods: {
         defaultLoad() {
-            const token = sessionStorage.getItem('token');
-            if (token === undefined || token === null || token === '') {
+            const token = sessionStorage.getItem('token'); //從 sessionStorage 取出登入時儲存的 token 
+            if (token === undefined || token === null || token === '') {// 如果沒有 token（使用者尚未登入），就直接結束這個方法，不做任何事。
                 return;
             }
-            this.$axios.get('user/auth').then(response => {
+            this.$axios.get('user/auth').then(response => {//如果有 token，就呼叫後端 /user/auth API，檢查使用者身份（通常後端會根據 token 回傳使用者資料）
                 const { data } = response;
                 if (data.code === 400) {
                     return;
                 }
-                if(data.data.userRole === 1){
+                if (data.data.userRole === 1) {
                     this.$router.push('/admin');
-                }else{
+                } else {
                     this.$router.push('/user');
                 }
             })
         },
+    /**如果 有登入過（sessionStorage 有 token）：進來後會自動驗證身份 → 跳轉到 /admin 或 /user
+     * 如果 沒登入過：就會卡在這個 login 畫面，等你點「立即登入」再去登入
+     * 
+     * 使用者進入畫面（Vue）
+     ↓
+        created() 自動執行 defaultLoad()
+     ↓
+        發送 request.get("user/auth")
+     ↓
+        [後端] auth() 被呼叫
+     ↓
+        從 LocalThreadHolder 拿目前登入者 userId
+     ↓
+        查資料庫得到 User 資料
+     ↓
+        轉成 UserVO 格式
+     ↓
+        回傳 Result<UserVO> 給前端
+     ↓
+        前端拿到 userRole 做判斷：
+     -   1：導到 /admin
+     - 其他：導到 /user
+     */
+
+
+
         // 跳轉註冊頁面
         toDoRegister() {
             this.$router.push('/register');
@@ -218,7 +244,7 @@ export default {
             .no-act:hover {
                 color: #3e77c2;
                 cursor: pointer;
-                
+
             }
 
         }

@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
         User queryEntity = User.builder().id(userId).build();
         User user = userMapper.getByActive(queryEntity);
         UserVO userVO = new UserVO();
-        BeanUtils.copyProperties(user, userVO);
+        BeanUtils.copyProperties(user, userVO);//把 user 裡面對應的欄位值，複製到 userVO去    user是物件，可能有資料庫欄位（像密碼、刪除標記、內部欄位等），不適合直接給前端
         return ApiResult.success(userVO);
     }
 

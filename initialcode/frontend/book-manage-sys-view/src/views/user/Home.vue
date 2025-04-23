@@ -89,8 +89,8 @@ export default {
         };
     },
     created() {
-        let menus = router.options.routes.filter(route => route.path == '/user')[0];
-        this.adminRoutes = menus.children;
+        let menus = router.options.routes.filter(route => route.path == '/user')[0];//// 根據目前角色，把 /user 下的 routes 抓出來
+        this.adminRoutes = menus.children;//找出 /user 頁面的所有路由設定
         this.tokenCheckLoad();
         this.menuOperationHistory();
     },
