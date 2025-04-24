@@ -374,6 +374,8 @@ export default {
                 const { data } = response;
                 this.tableData = data.data; //給data裡的tableData   query後端回傳的資料
                 this.totalItems = data.total;//給data裡的totalItems 總條數
+                console.log("後端回傳的 cover：", data.data.map(item => item.cover));
+                
             } catch (error) {
                 console.error('查詢書籍訊息異常:', error);
             }
