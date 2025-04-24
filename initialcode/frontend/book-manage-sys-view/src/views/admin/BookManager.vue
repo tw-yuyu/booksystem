@@ -77,7 +77,7 @@
                     <div class="point">書籍封面</div>
                     <el-upload 
                          class="avatar-uploader" 
-                         action="https://booksystem-jgi1.onrender.com/api/book-manage-sys-api/v1.0/file/upload"  
+                        :action="uploadUrl"  
                         :show-file-list="false" 
                         :on-success="handleBookCoverSuccess">
                         <img v-if="cover" :src="cover" class="dialog-avatar">   
@@ -176,8 +176,8 @@ export default {
             selectedRows: [],//勾選的數據數組
             bookQueryDto: {}, // 搜索條件
             categoryoptions: [],//下拉選框
-            bookshelfoptions: []//下拉選框
-
+            bookshelfoptions: [],//下拉選框
+            uploadUrl: 'https://booksystem-jgi1.onrender.com/api/book-manage-sys-api/v1.0/file/upload'
         };
     },
     created() {
