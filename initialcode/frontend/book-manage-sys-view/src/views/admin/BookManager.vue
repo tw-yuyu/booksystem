@@ -83,6 +83,7 @@
                         <img v-if="cover" :src="cover" class="dialog-avatar">   
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
+                    <!-- render 必須絕對路徑才能打API -->
                     <!-- action="/api/book-manage-sys-api/v1.0/file/upload"  -->
                     <!-- v-if="cover"只有當 cover 有值 才會渲染這個 <img> 元素 -->
                     <!-- action指定圖片上傳的 API 路徑 -->
