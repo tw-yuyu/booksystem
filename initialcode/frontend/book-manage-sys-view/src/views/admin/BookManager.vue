@@ -77,12 +77,13 @@
                     <div class="point">書籍封面</div>
                     <el-upload 
                          class="avatar-uploader" 
-                        :action="uploadUrl"  
+                         action="https://booksystem-jgi1.onrender.com/api/book-manage-sys-api/v1.0/file/upload" 
                         :show-file-list="false" 
                         :on-success="handleBookCoverSuccess">
                         <img v-if="cover" :src="cover" class="dialog-avatar">   
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
+                    <!-- action="/api/book-manage-sys-api/v1.0/file/upload"  -->
                     <!-- v-if="cover"只有當 cover 有值 才會渲染這個 <img> 元素 -->
                     <!-- action指定圖片上傳的 API 路徑 -->
                     <!-- on-success：上傳成功後會呼叫 handleBookCoverSuccess 處理圖片 URL -->
@@ -176,8 +177,8 @@ export default {
             selectedRows: [],//勾選的數據數組
             bookQueryDto: {}, // 搜索條件
             categoryoptions: [],//下拉選框
-            bookshelfoptions: [],//下拉選框
-            uploadUrl: 'https://booksystem-jgi1.onrender.com/api/book-manage-sys-api/v1.0/file/upload'
+            bookshelfoptions: []//下拉選框
+
         };
     },
     created() {
@@ -375,7 +376,6 @@ export default {
                 this.tableData = data.data; //給data裡的tableData   query後端回傳的資料
                 this.totalItems = data.total;//給data裡的totalItems 總條數
                 console.log("後端回傳的 cover：", data.data.map(item => item.cover));
-                
             } catch (error) {
                 console.error('查詢書籍訊息異常:', error);
             }
