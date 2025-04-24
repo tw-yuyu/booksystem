@@ -6,9 +6,10 @@ server:
   servlet:
     context-path: /api/book-manage-sys-api/v1.0
 
-# API 地址前綴，用於接口攔截放行
+# API 地址前綴，用於接口攔截放行 與 檔案上傳
 my-server:
-  api-context-path: /api/book-manage-sys-api/v1.0
+  api-context-path: https://booksystem-jgi1.onrender.com/api/book-manage-sys-api/v1.0
+#  /api/book-manage-sys-api/v1.0
 
 # MySQL 與檔案上傳限制配置  local:如果有application-local.yml會將application-local.yml文件覆蓋到這裡  雲端DB不能寫死application-local.yml不能上傳git
 spring:

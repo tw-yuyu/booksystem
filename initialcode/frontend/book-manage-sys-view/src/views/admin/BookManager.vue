@@ -33,8 +33,10 @@
                 <!-- el-table 會自動遍歷 tableData 陣列 -->
                 <el-table-column prop="cover" width="148" label="書籍封面">
                     <template slot-scope="scope">
-                        <img :src="scope.row.cover" class="list-cover">
+                        <img :src="scope.row.cover" class="list-cover">  
                     </template>
+                    <!-- /api/book-manage-sys-api/v1.0/file/getFile?fileName=d811c68asdff.jpg -->
+                     <!-- 給後端file/getFile的API並回傳圖片的資料流 -->
                 </el-table-column>
                 <el-table-column prop="name" width="148" label="書籍名"></el-table-column>
                 <el-table-column prop="isbn" width="148" label="ISBN"></el-table-column>
@@ -73,11 +75,18 @@
             <div style="padding:0 20px 40px 15px ; display: flex;">
                 <div>
                     <div class="point">書籍封面</div>
-                    <el-upload class="avatar-uploader" action="/api/book-manage-sys-api/v1.0/file/upload"
-                        :show-file-list="false" :on-success="handleBookCoverSuccess">
-                        <img v-if="cover" :src="cover" class="dialog-avatar">
+                    <el-upload 
+                         class="avatar-uploader" 
+                         action="/api/book-manage-sys-api/v1.0/file/upload"  
+                        :show-file-list="false" 
+                        :on-success="handleBookCoverSuccess">
+                        <img v-if="cover" :src="cover" class="dialog-avatar">   
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
+                    <!-- v-if="cover"只有當 cover 有值 才會渲染這個 <img> 元素 -->
+                    <!-- action指定圖片上傳的 API 路徑 -->
+                    <!-- on-success：上傳成功後會呼叫 handleBookCoverSuccess 處理圖片 URL -->
+                    <!-- :src="cover"：顯示圖片的封面，會由成功回傳的圖片網址決定 -->
                     <div style="margin-bottom: 5px ;">
                         <div class="point">書架樓層</div>
                         <!-- v-model=data.bookshelfId 就是指這個 data{} bookshelfId 雙向綁定 -->
@@ -162,7 +171,7 @@ export default {
             pageSize: 7,//頁面大小  
             totalItems: 0, //總條數 
             dialogOperation: false, // 彈窗開關
-            isOperation: false, // 彈窗開關 辨識新增還是修改
+            isOperation: false, // 彈窗開關 辨識新增還是修改 false是新增彈窗 tuer是修改彈窗
             tableData: [],//表格數組
             selectedRows: [],//勾選的數據數組
             bookQueryDto: {}, // 搜索條件
@@ -187,8 +196,8 @@ export default {
             }
             this.$message.success(`書籍封面上傳成功`);
             console.log("Uploaded cover URL:", res.data);
-            this.cover = res.data;//賦值給data()裡的coverd讓前端能讀取照片
-            this.data.cover = res.data; //賦值給data()裡的data{}
+            this.cover = res.data;//賦值給data()裡的coverd讓前端能讀取照片 /api/book-manage-sys-api/v1.0/file/getFile?fileName=55cee0bpic_4.jpg
+            this.data.cover = res.data; //賦值給data()裡的data{}         /api/book-manage-sys-api/v1.0/file/getFile?fileName=55cee0bpic_4.jpg
         },
         //下拉選單 重新整理就先拉出Categroy表
         fetchCategroy() {
@@ -332,7 +341,7 @@ export default {
                 this.$message[response.data.code === 200 ? 'success' : 'error'](response.data.msg);
                 if (response.data.code === 200) {
                     this.closeDialog(); //關閉當前的對話框 
-                    this.fetchFreshData(); // 重新拉取最新數據，確保畫面更新                     ===============此為新增================
+                    this.fetchFreshData(); // 重新拉取最新數據，確保畫面更新                     
                     this.clearFormData();//清空表單數據，避免舊數據影響下一次輸入
                 }
             } catch (error) {
@@ -340,15 +349,12 @@ export default {
                 this.$message.error('提交失敗，請稍後在試！');
             }
         },
-        closeDialog() {
-            this.dialogOperation = false;
-        },
         //當沒有完成表單修改 離開彈窗時也會關閉對話框並清空
         closeDialog() {
             this.dialogOperation = false; // 關閉對話框
             this.clearFormData(); // 確保資料清空
         },
-        // 關閉彈窗清除表單資訊 順便將isOperation設定為新增彈窗                   ===============此為新增================
+        // 關閉彈窗清除表單資訊 順便將isOperation設定為新增彈窗                   
         clearFormData() {
             this.data = {};     //將data{}為空 清除
             this.isOperation = false; // 重置為新增彈窗
@@ -358,19 +364,10 @@ export default {
         async fetchFreshData() {
             try {
                 this.tableData = [];
-                let startTime = null;
-                let endTime = null;
-                if (this.searchTime != null && this.searchTime.length === 2) {
-                    const [startDate, endDate] = await Promise.all(this.searchTime.map(date => date.toISOString()));
-                    startTime = `${startDate.split('T')[0]}T00:00:00`;
-                    endTime = `${endDate.split('T')[0]}T23:59:59`;
-                }
                 // 請求參數
                 const params = {
                     current: this.currentPage,
                     size: this.pageSize,
-                    startTime: startTime,
-                    endTime: endTime,
                     ...this.bookQueryDto //將模糊搜尋裡的字串傳進來並放在data() 在這裡讀取傳給後端 什麼都沒傳就查詢全部mapper  {current: 1, size: 7, startTime: null, endTime: null}
                 };
                 const response = await this.$axios.post('/book/query', params); //把params也發送到後端
@@ -404,12 +401,12 @@ export default {
         messagePush(row) {
             this.data = { ...row };
         },
-        //修改編輯按下後
+        //修改編輯按下後跳出的表單 帶有那一行的tableData資料
         handleEdit(row) {
-            this.dialogOperation = true; // 打開對話框（或是顯示編輯界面）
             this.isOperation = true; // 設定操作模式為編輯
+            this.dialogOperation = true; // 打開對話框（或是顯示編輯界面）
             this.data = { ...row } // 將傳入的 `row` 物件的內容複製一份並賦值給 `data`
-            this.cover = row.cover; //將row裡的img src 傳入data()cover 可以更新讀取圖片
+            this.cover = row.cover; //將row裡的img src 傳入data()cover 可以更新讀取圖片 就是tableData裡的cover 
         },
         handleDelete(row) {
             this.selectedRows.push(row);
