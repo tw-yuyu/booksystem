@@ -124,7 +124,7 @@ public class FileController {
     @GetMapping("/getFile")
     public void getImage(@RequestParam("fileName") String imageName,
                          HttpServletResponse response) throws IOException {
-        File fileDir = new File(PathUtils.getClassLoadRootPath() + "/pic"); //取得pic 資料夾的 File 物件(取得專案的根目錄)
+        File fileDir = new File(PathUtils.getClassLoadRootPath() + "/pic"); //取得pic 資料夾的 File 物件(取得專案的根目錄) RENDER  file:/app/target/app.jar!/BOOT-INF/classes!
         File image = new File(fileDir.getAbsolutePath() + "/" + imageName); //建立一個 File 物件，代表你準備讀取檔案的「完整路徑」指向磁碟中圖片實體的 Java File 物件 D:/booksystem/initialcode/BackEnd/books-manage-sys/pic/55cee0bpic_4.jpg
         if (image.exists()) { //如果存在就寫資料流傳到前端
             FileInputStream fileInputStream = new FileInputStream(image);

@@ -77,7 +77,7 @@
                     <div class="point">書籍封面</div>
                     <el-upload 
                          class="avatar-uploader" 
-                         action="/api/book-manage-sys-api/v1.0/file/upload"  
+                         action="https://booksystem-jgi1.onrender.com/api/book-manage-sys-api/v1.0/file/upload"  
                         :show-file-list="false" 
                         :on-success="handleBookCoverSuccess">
                         <img v-if="cover" :src="cover" class="dialog-avatar">   
