@@ -17,7 +17,7 @@ const routes = [
     path: "/admin",
     component: () => import(`@/views/admin/Home.vue`),// ← 這是父路由的主頁面(主框架) 不管訪問哪一個 /admin 的子路由都會先載入Home.vue然後再把子頁面動態地載入到 Home.vue 裡的 <router-view></router-view> 裡面
     meta: { requireAuth: true }, //這個屬性表示需要登入驗證，下面會用來判斷是否要跳轉登入。
-    children: [
+    children: [//??
       { path: "/adminLayout", name: '數據總覽', icon: 'el-icon-data-analysis', component: () => import(`@/views/admin/Main.vue`), meta: { requireAuth: true } },
       { path: "/userManage", name: '用戶管理', icon: 'el-icon-user-solid', component: () => import(`@/views/admin/UserManage.vue`), meta: { requireAuth: true } },
       { path: "/bookManager", name: '書籍管理', icon: 'el-icon-s-grid', component: () => import(`@/views/admin/BookManager.vue`), meta: { requireAuth: true } },
