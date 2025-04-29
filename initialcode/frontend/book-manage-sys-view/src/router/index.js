@@ -53,7 +53,7 @@ const routes = [
 
 const router = new VueRouter({
   routes, // 把上面定義的 routes 陣列放進來
-  mode: 'history' // 使用 HTML5 的 history 模式（去掉網址上的 #）
+  mode: 'hash' // 使用 HTML5 的 history 模式（去掉網址上的 #）
 });
 router.beforeEach((to, from, next) => { //透過 meta 欄位來設定requireAuth
   console.log("目前跳轉到路由：", to.path);
