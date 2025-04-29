@@ -53,7 +53,7 @@ export default {
                     return;
                 }
                 if (data.data.userRole === 1) {
-                    this.$router.push('/admin');
+                    this.$router.push('/admin'); //決定進入/admin還是/user
                 } else {
                     this.$router.push('/user');
                 }

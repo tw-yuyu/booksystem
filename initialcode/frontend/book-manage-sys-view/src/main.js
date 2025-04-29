@@ -21,7 +21,7 @@ Vue.prototype.$axios = request;
 import swalPlugin from '@/utils/swalPlugin';
 Vue.use(swalPlugin);
 
-new Vue({
+new Vue({ //代表 VUE啟動了要做什麼事
   router,
   regionData,
   provinceAndCityData,

@@ -7,6 +7,7 @@ import echarts from 'echarts';// 引入 ECharts 圖表套件
 Vue.prototype.$echarts = echarts;// 把 ECharts 掛到 Vue 原型上，全局可以用 this.$echarts 使用
 Vue.use(ElementUI);// 全局註冊 Element UI 套件
 Vue.use(VueRouter);// 全局啟用 Vue Router 套件
+//login邏輯進入到哪個 決定進入/admin還是/user
 
 const routes = [
   { path: "/", component: () => import(`@/views/login/Login.vue`) },//沒有加上 meta: { requireAuth: true }，代表不需要檢查 token。
@@ -53,7 +54,7 @@ const routes = [
 
 const router = new VueRouter({
   routes, // 把上面定義的 routes 陣列放進來
-  mode: 'hash' // 使用 HTML5 的 history 模式（去掉網址上的 #）
+  mode: 'history' // 使用 HTML5 的 history 模式（去掉網址上的 #）hash
 });
 router.beforeEach((to, from, next) => { //透過 meta 欄位來設定requireAuth
   console.log("目前跳轉到路由：", to.path);
