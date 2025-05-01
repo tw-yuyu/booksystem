@@ -1,14 +1,23 @@
-# 使用 Java 17 輕量映像
+# 使用 Java 17 的輕量映像
 FROM eclipse-temurin:17-jdk-alpine
 
-# 設定工作目錄（容器內的根目錄）
+# 安裝 dos2unix 工具來修正 Windows 格式的換行問題
+RUN apk add --no-cache dos2unix
+
+# 設定容器內的工作目錄
 WORKDIR /app
 
-# 複製整個專案到容器內（含 pom.xml, src, .mvnw 等）
+# 複製整個專案到容器內
 COPY . .
 
-# 執行 Maven Wrapper 來打包 Spring Boot 應用
+# 修正 mvnw 格式並給予執行權限
+RUN dos2unix mvnw && chmod +x mvnw
+
+# 使用 Maven Wrapper 打包 Spring Boot 專案
 RUN ./mvnw clean package -DskipTests
 
-# 執行打包後的 JAR 檔案
-ENTRYPOINT ["java", "-jar", "target/app.jar"]  
+# 設定容器啟動時執行 jar 檔案
+ENTRYPOINT ["java", "-jar", "target/app.jar"]
+
+# 開放 Spring Boot 埠號（application.yml 設定）
+EXPOSE 21090

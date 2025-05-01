@@ -1,34 +1,49 @@
-# 服務配置
-#  如果有環境變數 PORT（Render 會傳入） → 使用這個值（正確的埠口 ✅）
-#  如果在本地執行（沒有設定 PORT） → 就用 21090 方便開發
+# ============================
+#  服務設定：支援 EC2 預設 port，開發預設 21090
+# ============================
 server:
-  port: ${PORT:21090}
+  port: ${PORT:21090}  # 使用環境變數 PORT，若未提供則預設為 21090
   servlet:
-    context-path: /api/book-manage-sys-api/v1.0
+    context-path: /api/book-manage-sys-api/v1.0  # API 前綴路徑
 
-# API 地址前綴，用於接口攔截放行 與 檔案上傳
+# ============================
+#  自定 API 前綴（如果需要做判斷、過濾器或 API 比對）
+# 可透過環境變數 API_PREFIX 控制
+# 自己要設定它，否則 Spring Boot 就會自動套用右邊的預設值
+# ============================
 my-server:
-  api-context-path: https://booksystem-jgi1.onrender.com/api/book-manage-sys-api/v1.0
-#  /api/book-manage-sys-api/v1.0
+  api-context-path: ${API_PREFIX:/api/book-manage-sys-api/v1.0}
 
-# MySQL 與檔案上傳限制配置  local:如果有application-local.yml會將application-local.yml文件覆蓋到這裡  雲端DB不能寫死application-local.yml不能上傳git
+# ============================
+#  Spring Profile：預設為 local，部署時請改用環境變數傳入 prod
+# ex: java -jar xxx.jar --spring.profiles.active=prod
+#  當系統啟動時，除了 application.yml，還要再載入哪一個對應的設定檔 application-xxx.yml
+# ============================
 spring:
   profiles:
-    active: local
+    active: ${SPRING_PROFILES_ACTIVE:local}
+
   servlet:
     multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
+      max-file-size: 10MB       # 限制上傳單檔大小
+      max-request-size: 10MB    # 限制整體上傳請求大小
 
+  # ============================
+  #  資料庫設定（使用環境變數注入，不要寫死）
+  # ============================
   datasource:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?useSSL=true&serverTimezone=Asia/Taipei
-      username: ${DB_USER}
-      password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?useSSL=true&serverTimezone=Asia/Taipei
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
 
+# ============================
+#  MyBatis 設定
+# ============================
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   configuration:
+    #  輸出 SQL 到 console，方便除錯（可改為 logback ）
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 

@@ -16,3 +16,4 @@
 .svn/
 .vscode/
 .idea/
+*.pem

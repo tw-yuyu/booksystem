@@ -339,7 +339,7 @@ export default {
         async addOperation() {
 
             try {
-                const response = await this.$axios.post('/book/save', this.data); //提交表單數據data()裡面的data{}
+                const response = await this.$axios.post('/book/save', this.data); //提交表單數據 data()裡面的data{}
                 this.$message[response.data.code === 200 ? 'success' : 'error'](response.data.msg);
                 if (response.data.code === 200) {
                     this.closeDialog(); //關閉當前的對話框 

@@ -1,0 +1,22 @@
+
+version: '3.8'  # 使用 Docker Compose 的版本 3.8（對應新版 Docker Engine）
+
+services:  # 定義所有的服務（容器）
+
+   backend:  # 服務名稱，可自訂，用來識別這個容器（例如 backend 是 Spring Boot）
+    build:
+      context: .  # 指定從哪個目錄建構 Docker image（就是目前資料夾）
+    image: backend-app  # 使用名為 backend-app 的 Docker image（若有 build 會自動建立）
+    container_name: backend  # 指定這個容器的名稱為 backend（否則會自動亂取）
+    restart: always  # 當容器崩潰或 EC2 重啟時，自動重新啟動容器（提升穩定性）
+
+    ports:
+      - "21090:21090"  # 將主機（EC2）的 21090 port 映射到容器內的 21090 port
+
+    environment:  # 傳遞環境變數給容器（對應到 application.yml 裡的 ${...}）
+      DB_HOST: booksystem-db.c5844k64im20.ap-southeast-2.rds.amazonaws.com   # 資料庫主機位址
+      DB_PORT: 3306  # 資料庫連接埠
+      DB_NAME: book_manage_sys  # 資料庫名稱
+      DB_USER: admin  # 資料庫帳號
+      DB_PASSWORD: aa123456  # 資料庫密碼（可改用 .env 提高安全）
+      SPRING_PROFILES_ACTIVE: prod  # 啟動 Spring Boot 使用 prod 設定檔 啟動時套用 application-prod.yml
