@@ -16,12 +16,12 @@ my-server:
 
 # ============================
 #  Spring Profile：預設為 local，部署時請改用環境變數傳入 prod
-# ex: java -jar xxx.jar --spring.profiles.active=prod
+#  ex: java -jar xxx.jar --spring.profiles.active=prod
 #  當系統啟動時，除了 application.yml，還要再載入哪一個對應的設定檔 application-xxx.yml
 # ============================
 spring:
   profiles:
-    active: ${SPRING_PROFILES_ACTIVE:local}
+    active: ${SPRING_PROFILES_ACTIVE:local}   #docker-compose裡面 SPRING_PROFILES_ACTIVE: prod 
 
   servlet:
     multipart:
