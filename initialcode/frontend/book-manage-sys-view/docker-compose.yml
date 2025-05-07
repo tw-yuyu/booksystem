@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  vue-frontend:
+    build:
+      context: .
+    image: vue-frontend:latest   
+    ports:
+      - "80:80"
+    restart: always
