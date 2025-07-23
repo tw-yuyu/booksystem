@@ -77,7 +77,7 @@
                     <div class="point">書籍封面</div>
                     <el-upload 
                          class="avatar-uploader" 
-                         action="http://3.27.231.138:21090/api/book-manage-sys-api/v1.0/file/upload" 
+                         action="/api/book-manage-sys-api/v1.0/file/upload"
                         :show-file-list="false" 
                         :on-success="handleBookCoverSuccess">
                         <img v-if="cover" :src="cover" class="dialog-avatar">   
@@ -85,6 +85,7 @@
                     </el-upload>
                     <!-- render 必須絕對路徑才能打API -->
                     <!-- action="/api/book-manage-sys-api/v1.0/file/upload"  -->
+                    <!-- action="http://3.27.231.138:21090/api/book-manage-sys-api/v1.0/file/upload" -->
                     <!-- v-if="cover"只有當 cover 有值 才會渲染這個 <img> 元素 -->
                     <!-- action指定圖片上傳的 API 路徑 -->
                     <!-- on-success：上傳成功後會呼叫 handleBookCoverSuccess 處理圖片 URL -->

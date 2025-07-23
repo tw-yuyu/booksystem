@@ -19,4 +19,4 @@ services:  # 定義所有的服務（容器）
       DB_NAME: book_manage_sys  # 資料庫名稱
       DB_USER: admin  # 資料庫帳號
       DB_PASSWORD: aa123456  # 資料庫密碼（可改用 .env 提高安全）
-      SPRING_PROFILES_ACTIVE: prod  # 啟動 Spring Boot  使用 prod 設定檔 啟動時套用 application-prod.yml 沒有也沒關係 因為都會啟動application.yml
+      SPRING_PROFILES_ACTIVE: prod  # 啟動 Spring Boot  使用 prod 設定檔 啟動時套用 application-p rod.yml 沒有也沒關係 因為都會啟動application.yml

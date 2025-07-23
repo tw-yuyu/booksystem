@@ -21,7 +21,7 @@ my-server:
 # ============================
 spring:
   profiles:
-    active: ${SPRING_PROFILES_ACTIVE:local}   #docker-compose裡面 SPRING_PROFILES_ACTIVE: prod 
+    active: ${SPRING_PROFILES_ACTIVE:local}   #docker-compose裡面 SPRING_PROFILES_ACTIVE: prod    本地使用application-local.yml
 
   servlet:
     multipart:
@@ -40,8 +40,8 @@ spring:
   #  照片上傳路徑(EC2)
   # ============================
 file:
-  upload-path: /app/pic  # 部署路徑
-
+#  upload-path: /app/pic  # 部署docker路徑
+   upload-path: D:\booksystem\initialcode\backend\books-manage-sys\pic  # 本地路徑
 # ============================
 #  MyBatis 設定
 # ============================
