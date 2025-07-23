@@ -13,19 +13,19 @@ public class PathUtils {
 //            prePath:/D:/booksystem/initialcode/backend/books-manage-sys/
             String osName = System.getProperty("os.name");
 //            讀取是甚麼作業系統
-            System.out.println("osName:"+osName);
+            System.out.println("mac根目錄================================:"+osName);
             if (osName.toLowerCase().startsWith("mac")) {
                 // 蘋果
                 path = prePath.substring(0, prePath.length() - 1);
             } else if (osName.toLowerCase().startsWith("windows")) {
                 // windows
                 path = prePath.substring(1, prePath.length() - 1);
-                System.out.println("windows:"+path);
+                System.out.println("windows根目錄================================:"+path);
 //                D:/booksystem/initialcode/backend/books-manage-sys
             } else if(osName.toLowerCase().startsWith("linux") || osName.toLowerCase().startsWith("unix")) {
                 // unix or linux
                 path = prePath.substring(0, prePath.length() - 1);
-                System.out.println("linux:"+path);
+                System.out.println("linux根目錄================================:"+path);
             } else {
                 path = prePath.substring(1, prePath.length() - 1);
             }

@@ -21,3 +21,7 @@ ENTRYPOINT ["java", "-jar", "target/app.jar"]
 
 # 開放 Spring Boot 埠號（application.yml 設定）
 EXPOSE 21090
+# 這會在容器啟動時建立 /app/pic 並開放權限寫入圖片
+# mkdir -p建立一個資料夾 /app/pic，如果中間的 /app 也不存在就一併建立
+# chmod 777給這個資料夾「所有人都可讀、可寫、可執行」的權限（開放式權限）
+RUN mkdir -p /app/pic && chmod 777 /app/pic

@@ -12,7 +12,7 @@ server:
 # 自己要設定它，否則 Spring Boot 就會自動套用右邊的預設值
 # ============================
 my-server:
-  api-context-path: ${API_PREFIX:/api/book-manage-sys-api/v1.0}
+  api-context-path: ${API_PREFIX:http://3.27.231.138/api/book-manage-sys-api/v1.0}
 
 # ============================
 #  Spring Profile：預設為 local，部署時請改用環境變數傳入 prod
@@ -36,6 +36,11 @@ spring:
     url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?useSSL=true&serverTimezone=Asia/Taipei
     username: ${DB_USER}
     password: ${DB_PASSWORD}
+  # ============================
+  #  照片上傳路徑(EC2)
+  # ============================
+file:
+  upload-path: /app/pic  # 部署路徑
 
 # ============================
 #  MyBatis 設定
@@ -45,6 +50,8 @@ mybatis:
   configuration:
     #  輸出 SQL 到 console，方便除錯（可改為 logback ）
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
 
 
 

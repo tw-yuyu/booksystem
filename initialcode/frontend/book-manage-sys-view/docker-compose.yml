@@ -1,10 +1,22 @@
-version: '3.8'
+version: '3.8'  # Docker Compose 使用的版本
 
 services:
-  vue-frontend:
+  backend:
     build:
-      context: .
-    image: vue-frontend:latest   
+      context: ../backend
+    container_name: backend
     ports:
-      - "80:80"
-    restart: always
+      - "21090:21090"
+  vue-frontend:  # 自訂服務名稱，可以是 vue-app、frontend 等
+    build:
+      context: .  # 建構映像檔的來源路徑，這裡是當前資料夾
+    image: vue-frontend:latest  # 給這個映像檔取名，方便日後使用或上傳
+    container_name: vue-frontend-container  # 自訂容器名稱
+    ports:
+      - "80:80"  # 把 EC2 主機的 80 port 映射到容器的 80 port
+    volumes:
+      - ./dist:/usr/share/nginx/html  # ✅ 掛載打包後的 Vue 靜態檔案
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf  # ✅ 掛載自訂 Nginx 設定  
+    depends_on:
+      - backend  # ✅ 確保能找到 backend:21090
+    restart: always  # 容器異常時自動重新啟動
