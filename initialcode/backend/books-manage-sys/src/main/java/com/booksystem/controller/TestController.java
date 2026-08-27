@@ -12,6 +12,7 @@ import java.sql.Connection;
 @RequestMapping("/test")
 public class TestController {
 
+    // Used by the health-check endpoints to verify database connectivity.
     @Resource
     private DataSource dataSource;
 
