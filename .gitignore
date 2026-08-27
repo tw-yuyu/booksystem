@@ -1,4 +1,4 @@
-# === Spring Boot 後端 ===
+# === Spring Boot 後端（本機設定與產生檔不納入版本控制）===
 /initialcode/backend/books-manage-sys/target/
 /initialcode/backend/books-manage-sys/.idea/
 /initialcode/backend/books-manage-sys/*.iml
